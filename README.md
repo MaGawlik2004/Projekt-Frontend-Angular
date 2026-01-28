@@ -1,4 +1,4 @@
-# System Rezerwacji Wizyt Lekarskich
+# System Rezerwacji Wizyt Lekarskich - Projekt Uczelniany
 
 Zintegrowany system webowy do zarządzania rezerwacjami wizyt medycznych, zbudowany w nowoczesnej architekturze opartej na mikroserwisach i kontenerach.
 
