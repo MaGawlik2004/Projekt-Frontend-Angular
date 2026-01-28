@@ -1,0 +1,367 @@
+@import 'variables';
+
+.detail-container {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  min-height: 100vh;
+  background: $bg-color;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+}
+
+.material-symbols-outlined {
+  font-size: 1.25rem;
+  vertical-align: middle;
+}
+
+.sidebar {
+  width: 100%;
+
+  .btn-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    padding: 8px 0;
+    transition: $transition;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+}
+
+.profile-card {
+  background: $white;
+  padding: 2rem;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow;
+  text-align: center;
+  box-sizing: border-box;
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    background: $primary-gradient;
+    color: $white;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 auto 1.5rem;
+  }
+
+  h2 {
+    margin: 0 0 0.5rem;
+    color: $text-dark;
+  }
+  .role-tag {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: $primary-color;
+    text-transform: uppercase;
+  }
+}
+
+.info-list {
+  margin: 2rem 0;
+  text-align: left;
+  .info-item {
+    margin-bottom: 1.25rem;
+    label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: $text-light;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    span {
+      font-weight: 600;
+      color: $text-dark;
+      word-break: break-all;
+    }
+    .active-txt {
+      color: $success-color;
+      font-weight: 800;
+    }
+    .inactive-txt {
+      color: $error-color;
+      font-weight: 800;
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  button {
+    width: 100%;
+    padding: 14px;
+    border-radius: $border-radius-md;
+    font-weight: 700;
+    cursor: pointer;
+    transition: $transition;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: none;
+    font-size: 0.9rem;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .btn-primary {
+    background: $primary-gradient;
+    color: white;
+  }
+  .btn-secondary {
+    background: $bg-surface-light;
+    color: $text-dark;
+    border: 1px solid $border-color;
+  }
+}
+
+.calendar-section {
+  width: 100%;
+  min-width: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: $glass-blur;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+}
+
+.modal-content {
+  background: $white;
+  padding: 2.5rem;
+  border-radius: $border-radius-lg;
+  width: 100%;
+  max-width: 550px;
+  box-shadow: $modal-shadow;
+  max-height: 90vh;
+  overflow-y: auto;
+
+  @media (max-width: 480px) {
+    padding: 1.5rem;
+  }
+
+  h3 {
+    margin-bottom: 1.5rem;
+    font-weight: 800;
+    color: $text-dark;
+  }
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: $text-muted;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    border-radius: $border-radius-md;
+    border: 1px solid $border-color;
+    background: $bg-color;
+    color: $text-dark;
+    box-sizing: border-box;
+    font-family: inherit;
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+    }
+  }
+}
+
+.info-box {
+  background: $bg-surface-light;
+  padding: 1rem;
+  border-radius: $border-radius-md;
+  margin-bottom: 2rem;
+  border-left: 4px solid $primary-color;
+  p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  small {
+    color: $text-muted;
+  }
+}
+
+.breaks-section {
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    label {
+      font-weight: 800;
+      color: $text-dark;
+    }
+  }
+
+  .btn-add-break {
+    background: $primary-light;
+    color: $primary-color;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .break-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: $bg-color;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 10px;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .break-inputs {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      input {
+        padding: 8px;
+        font-size: 0.85rem;
+      }
+      .to-label {
+        font-weight: 700;
+        color: $text-light;
+      }
+    }
+
+    .btn-remove-break {
+      background: rgba($error-color, 0.1);
+      color: $error-color;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      &:hover {
+        background: $error-color;
+        color: white;
+      }
+    }
+  }
+}
+
+.modal-btns {
+  display: flex;
+  gap: 12px;
+  margin-top: 2rem;
+
+  button {
+    flex: 1;
+    padding: 12px;
+    border-radius: $border-radius-md;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: $transition;
+  }
+
+  .btn-confirm {
+    background: $primary-gradient;
+    color: white;
+  }
+  .btn-cancel {
+    background: $bg-surface-light;
+    color: $text-muted;
+  }
+  .btn-secondary {
+    background: $bg-color;
+    border: 1px solid $border-color;
+  }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
+}
+
+.modal-btns-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  button {
+    width: 100%;
+    padding: 12px;
+    border-radius: $border-radius-md;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .btn-confirm {
+    background: $primary-gradient;
+    color: white;
+  }
+  .btn-danger {
+    background: rgba($error-color, 0.1);
+    color: $error-color;
+    &:hover {
+      background: $error-color;
+      color: white;
+    }
+  }
+  .btn-cancel {
+    background: $bg-surface-light;
+    color: $text-muted;
+  }
+}
+
+.modal-input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid $border-color;
+  background: $bg-color;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+}

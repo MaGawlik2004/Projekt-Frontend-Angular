@@ -1,0 +1,60 @@
+@import 'variables';
+
+.doctor-container {
+  padding: 2.5rem;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $box-shadow;
+  margin: 1rem;
+  min-height: calc(100vh - 120px);
+  width: auto;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    margin: 0;
+    padding: 1.25rem;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2.5rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: $text-dark;
+    letter-spacing: -0.02em;
+
+    @media (max-width: 768px) {
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .material-symbols-outlined {
+      background: $primary-light;
+      color: $primary-color;
+      padding: 10px;
+      border-radius: 14px;
+      font-size: 1.6rem;
+
+      @media (max-width: 480px) {
+        font-size: 1.2rem;
+        padding: 8px;
+      }
+    }
+  }
+}
+
+mg-calendar-component {
+  display: block;
+  border-top: 1px solid $bg-surface-light;
+  padding-top: 2rem;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding-top: 1rem;
+  }
+}

@@ -1,0 +1,92 @@
+@import 'variables';
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: $white;
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: $modal-shadow;
+  animation: modalScale 0.2s ease-out;
+
+  .icon-warning {
+    margin-bottom: 1rem;
+    .material-symbols-outlined {
+      font-size: 3.5rem;
+      color: #f59e0b;
+    }
+  }
+
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $text-dark;
+  }
+
+  p {
+    color: $text-muted;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+
+  button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: $transition;
+  }
+
+  .btn-cancel {
+    background: $bg-color;
+    color: $text-muted;
+    &:hover {
+      background: $border-color;
+    }
+  }
+
+  .btn-confirm {
+    background: $error-color;
+    color: $white;
+    &:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@keyframes modalScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

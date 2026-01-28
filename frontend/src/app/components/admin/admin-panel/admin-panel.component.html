@@ -1,0 +1,109 @@
+<div class="admin-dashboard">
+  <div class="content-wrapper">
+    <header class="page-header">
+      <h2>{{ langService.t()['admin']['title'] }}</h2>
+      <button type="button" class="btn-create" (click)="createNewDoctor()">
+        <span class="material-symbols-outlined">person_add</span>
+        {{ langService.t()['admin']['addNewDoctor'] }}
+      </button>
+    </header>
+
+    <div class="admin-toolbar">
+      <div class="search-box">
+        <span class="material-symbols-outlined">search</span>
+        <input
+          type="text"
+          [placeholder]="langService.translate('Szukaj po emailu...', 'Search by email...')"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="onSearchChange($event)"
+        />
+      </div>
+
+      <button type="button" class="btn-sort" (click)="toggleSort()">
+        <span class="material-symbols-outlined">
+          {{ sortDirection() === 'asc' ? 'sort_by_alpha' : 'sort_by_alpha' }}
+        </span>
+        {{ langService.translate('Sortuj po Email', 'Sort by Email') }}
+        <span class="material-symbols-outlined arrow">
+          {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+        </span>
+      </button>
+    </div>
+
+    <div class="table-card">
+      <table class="doctors-table">
+        <thead>
+          <tr>
+            <th>{{ langService.t()['admin']['tableEmail'] }}</th>
+            <th class="actions-column">{{ langService.t()['admin']['tableActions'] }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (doc of paginatedDoctors(); track doc._id) {
+            <tr>
+              <td class="email-cell">{{ doc.email }}</td>
+              <td class="actions-cell">
+                <div class="action-buttons">
+                  <button
+                    type="button"
+                    class="btn-action edit"
+                    (click)="goToEdit(doc._id)"
+                    [title]="'Edytuj'"
+                  >
+                    <span class="material-symbols-outlined">edit</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="btn-action details"
+                    (click)="goToDetails(doc._id)"
+                    [title]="'Szczegóły'"
+                  >
+                    <span class="material-symbols-outlined">calendar_month</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="2" class="empty-state">
+                {{
+                  searchTerm()
+                    ? langService.translate('Brak wyników', 'No results')
+                    : langService.t()['admin']['emptyState']
+                }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <footer class="pagination-footer">
+        <div class="pagination-controls">
+          <button
+            type="button"
+            class="arrow-btn"
+            (click)="prevPage()"
+            [disabled]="currentPage() === 1"
+          >
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
+
+          <span class="page-info">
+            {{ langService.t()['admin']['page'] }} <strong>{{ currentPage() }}</strong>
+            {{ langService.t()['common']['of'] }} {{ totalPages() || 1 }}
+          </span>
+
+          <button
+            type="button"
+            class="arrow-btn"
+            (click)="nextPage()"
+            [disabled]="currentPage() >= totalPages()"
+          >
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
+</div>

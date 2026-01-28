@@ -1,0 +1,128 @@
+@import 'variables';
+
+.material-symbols-outlined {
+  font-size: 1.4rem;
+  vertical-align: middle;
+}
+
+.doctor-dashboard {
+  display: flex;
+  min-height: calc(100vh - 70px);
+  background: $bg-color;
+  font-family: $font-main;
+
+  .doctor-sidebar {
+    width: 280px;
+    background: $white;
+    border-right: 1px solid $border-color;
+    padding: 2.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, 0.02);
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 2.5rem;
+      padding: 12px;
+      background: $bg-surface-light;
+      border-radius: 16px;
+      font-weight: 800;
+      color: $text-dark;
+      font-size: 1.1rem;
+      letter-spacing: -0.02em;
+
+      .material-symbols-outlined {
+        background: $primary-gradient;
+        color: $white;
+        padding: 8px;
+        border-radius: $border-radius-md;
+        font-size: 1.5rem;
+      }
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      .nav-item {
+        padding: 14px 18px;
+        border-radius: $border-radius-md;
+        color: $text-muted;
+        text-decoration: none;
+        font-weight: 700;
+        transition: $transition;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+
+        .material-symbols-outlined {
+          color: $text-light;
+          transition: color 0.2s;
+        }
+
+        &.active {
+          background: $primary-light;
+          color: $primary-color;
+          box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+
+          .material-symbols-outlined {
+            color: $primary-color;
+          }
+        }
+
+        &:hover:not(.active) {
+          background: $bg-color;
+          color: $text-dark;
+          transform: translateX(6px);
+
+          .material-symbols-outlined {
+            color: $text-dark;
+          }
+        }
+      }
+    }
+  }
+
+  .doctor-main-content {
+    flex: 1;
+    padding: 2.5rem;
+    overflow-y: auto;
+    height: calc(100vh - 70px);
+    animation: fadeIn 0.4s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .doctor-sidebar {
+    width: 80px;
+    padding: 2rem 0.75rem;
+    .nav-brand {
+      justify-content: center;
+      padding: 8px;
+      span:not(.material-symbols-outlined) {
+        display: none;
+      }
+    }
+    .nav-item {
+      justify-content: center;
+      padding: 14px;
+      span:not(.material-symbols-outlined) {
+        display: none;
+      }
+    }
+  }
+}

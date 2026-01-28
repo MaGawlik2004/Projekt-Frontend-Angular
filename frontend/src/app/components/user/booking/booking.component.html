@@ -1,0 +1,118 @@
+<div class="booking-page">
+  <div class="header-section">
+    <button type="button" class="btn-back" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      {{ langService.t()['booking']['backToList'] }}
+    </button>
+    <h2>
+      <span class="material-symbols-outlined">calendar_month</span>
+      {{ langService.t()['booking']['title'] }}
+    </h2>
+    <p>{{ langService.t()['booking']['subtitle'] }}</p>
+  </div>
+
+  <mg-calendar-component
+    [appointments]="appointments()"
+    (appointmentClicked)="handleSlotClick($event)"
+  >
+  </mg-calendar-component>
+
+  @if (selectedSlot(); as slot) {
+    <div
+      class="modal-overlay"
+      (click)="closeModal()"
+      (keydown.escape)="closeModal()"
+      role="presentation"
+      tabindex="-1"
+    >
+      <div
+        class="modal-content"
+        (click)="$event.stopPropagation()"
+        (keydown)="$event.stopPropagation()"
+        role="dialog"
+        aria-modal="true"
+        tabindex="0"
+      >
+        <div class="modal-header">
+          <h3>{{ langService.t()['booking']['modalTitle'] }}</h3>
+          <button type="button" class="close-x" (click)="closeModal()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="booking-summary">
+          <div class="summary-item">
+            <span class="material-symbols-outlined">event</span>
+            <div>
+              <span class="summary-label">{{ langService.t()['booking']['dateLabel'] }}</span>
+              <span class="summary-value">{{
+                slot.start_time | date: 'EEEE, dd.MM.yyyy' : undefined : langService.currentLang()
+              }}</span>
+            </div>
+          </div>
+          <div class="summary-item">
+            <span class="material-symbols-outlined">schedule</span>
+            <div>
+              <span class="summary-label">{{ langService.t()['booking']['timeLabel'] }}</span>
+              <span class="summary-value">{{ slot.start_time | date: 'HH:mm' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <form [formGroup]="bookingFormGroup">
+          <div class="form-group">
+            <label for="reasonInput">{{ langService.t()['booking']['reasonLabel'] }}</label>
+            <textarea
+              id="reasonInput"
+              formControlName="reason_for_visit"
+              [placeholder]="langService.t()['booking']['reasonPlaceholder']"
+              [class.error-border]="
+                bookingFormGroup.get('reason_for_visit')?.invalid &&
+                bookingFormGroup.get('reason_for_visit')?.touched
+              "
+            ></textarea>
+            @if (
+              bookingFormGroup.get('reason_for_visit')?.invalid &&
+              bookingFormGroup.get('reason_for_visit')?.touched
+            ) {
+              <small class="error-msg" style="color: #ef4444; font-size: 0.8rem; font-weight: 600">
+                Powód jest wymagany (min. 3 znaki)
+              </small>
+            }
+          </div>
+
+          <div class="form-group checkbox-group">
+            <div class="custom-checkbox">
+              <input type="checkbox" id="prev" formControlName="previous_treatment" />
+              <label for="prev">{{ langService.t()['booking']['prevTreatment'] }}</label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notesInput">{{ langService.t()['booking']['notesLabel'] }}</label>
+            <textarea
+              id="notesInput"
+              formControlName="additional_notes"
+              [placeholder]="langService.t()['booking']['notesPlaceholder']"
+            ></textarea>
+          </div>
+        </form>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-cancel" (click)="closeModal()">
+            {{ langService.t()['common']['cancel'] }}
+          </button>
+          <button
+            type="button"
+            class="btn-confirm-action"
+            (click)="confirmBooking()"
+            [style.opacity]="bookingFormGroup.invalid ? '0.5' : '1'"
+          >
+            <span class="material-symbols-outlined">check_circle</span>
+            {{ langService.t()['booking']['btnConfirm'] }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,43 @@
+$primary-color: #2a7de1;
+$primary-hover: #1e5bb0;
+$primary-light: rgba(42, 125, 225, 0.1);
+$primary-gradient: linear-gradient(135deg, #2a7de1 0%, #1a5bb0 100%);
+
+$font-main:
+  'Inter',
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  sans-serif;
+$transition: all 0.2s ease-in-out;
+$border-radius-lg: 24px;
+$border-radius-md: 12px;
+$border-radius-sm: 8px;
+
+$error-color: #ef4444;
+$success-color: #10b981;
+$glass-blur: blur(12px);
+
+$bg-color: var(--bg-color);
+$bg-surface-light: var(--bg-surface-light);
+$white: var(--white);
+$text-dark: var(--text-dark);
+$text-muted: var(--text-muted);
+$text-light: var(--text-light);
+$border-color: var(--border-color);
+$white-glass: var(--white-glass);
+
+$box-shadow: var(--card-shadow);
+$card-shadow: var(--card-shadow);
+$modal-shadow: var(--card-shadow);
+
+$bg-gradient: var(--bg-gradient);
+$input-focus-shadow: var(--input-shadow);
+$border-light: 1px solid var(--border-color);
+
+$available-bg: #f0fdf4;
+$available-border: $success-color;
+$booked-bg: #fff1f2;
+$booked-border: $error-color;
+$completed-bg: #f8fafc;
+$completed-border: #94a3b8;

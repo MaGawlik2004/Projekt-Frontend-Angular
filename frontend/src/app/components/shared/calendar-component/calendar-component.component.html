@@ -1,0 +1,124 @@
+<div class="calendar-card">
+  <div class="calendar-header">
+    <div class="week-picker">
+      <button (click)="changeWeek(-1)" class="arrow-btn" type="button" aria-label="Previous week">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+
+      <div
+        class="datepicker-wrapper"
+        (click)="dateInput.showPicker()"
+        (keydown.enter)="dateInput.showPicker()"
+        tabindex="0"
+        role="button"
+        aria-label="Open date picker"
+      >
+        <div class="date-trigger">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <div class="date-range-info">
+            <span class="date-text">
+              {{ weekDates()[0] | date: 'dd.MM' : undefined : langService.currentLang() }} -
+              {{ weekDates()[6] | date: 'dd.MM.yyyy' : undefined : langService.currentLang() }}
+            </span>
+            <span class="hint-text">
+              {{ langService.currentLang() === 'pl' ? 'Zmień tydzień' : 'Change week' }}
+            </span>
+          </div>
+        </div>
+
+        <input
+          #dateInput
+          type="date"
+          (change)="onDateSelect($event)"
+          (click)="$event.stopPropagation()"
+          class="hidden-input"
+          aria-hidden="true"
+        />
+      </div>
+
+      <button (click)="changeWeek(1)" class="arrow-btn" type="button" aria-label="Next week">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>
+    </div>
+
+    <div class="legend">
+      <span class="item">
+        <span class="box available"></span>
+        {{ langService.currentLang() === 'pl' ? 'Wolne' : 'Available' }}
+      </span>
+      <span class="item">
+        <span class="box booked"></span>
+        {{ langService.currentLang() === 'pl' ? 'Zajęte' : 'Booked' }}
+      </span>
+      <span class="item">
+        <span class="box finished"></span>
+        {{ langService.currentLang() === 'pl' ? 'Zakończone' : 'Finished' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="calendar-viewport">
+    <div class="calendar-grid">
+      <div class="grid-header-cell time-label">
+        <span class="material-symbols-outlined">schedule</span>
+      </div>
+
+      @for (date of weekDates(); track date) {
+        <div class="grid-header-cell">
+          <div class="day-name">{{ weekDaysNames()[$index] }}</div>
+          <div class="day-date">
+            {{ date | date: 'dd.MM' : undefined : langService.currentLang() }}
+          </div>
+        </div>
+      }
+
+      @for (time of timeSlots; track time) {
+        <div class="time-row-label">{{ time }}</div>
+
+        @for (date of weekDates(); track $index) {
+          <div class="calendar-slot">
+            @if (getAppointmentForSlot(date, time); as appt) {
+              <div
+                class="appointment-pill"
+                [class]="appt.status"
+                (click)="onSlotClick(appt)"
+                (keydown.enter)="onSlotClick(appt)"
+                tabindex="0"
+                role="button"
+              >
+                <span class="material-symbols-outlined status-icon">
+                  {{
+                    appt.status === 'booked'
+                      ? 'person'
+                      : appt.status === 'completed'
+                        ? 'check_circle'
+                        : 'event_available'
+                  }}
+                </span>
+                <span class="status-text">
+                  @if (langService.currentLang() === 'pl') {
+                    {{
+                      appt.status === 'booked'
+                        ? 'Zajęty'
+                        : appt.status === 'completed'
+                          ? 'Koniec'
+                          : 'Wolny'
+                    }}
+                  } @else {
+                    {{
+                      appt.status === 'booked'
+                        ? 'Booked'
+                        : appt.status === 'completed'
+                          ? 'Done'
+                          : 'Free'
+                    }}
+                  }
+                </span>
+              </div>
+            }
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>

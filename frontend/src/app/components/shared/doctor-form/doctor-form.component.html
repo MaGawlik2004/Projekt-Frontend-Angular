@@ -1,0 +1,49 @@
+<div class="form-container">
+  <header class="header">
+    <button type="button" routerLink="/admin" class="btn-back">
+      <span class="material-symbols-outlined">arrow_back</span>
+    </button>
+    <h2>{{ isEditMode() ? 'Edytuj lekarza' : 'Dodaj nowego lekarza' }}</h2>
+  </header>
+
+  <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()" class="doctor-card-form">
+    <div class="input-group">
+      <label for="fullName">Imię i Nazwisko</label>
+      <input id="fullName" formControlName="full_name" type="text" placeholder="np. Jan Kowalski" />
+      @if (doctorForm.get('full_name')?.touched && doctorForm.get('full_name')?.invalid) {
+        <small class="error-msg">Imię musi mieć min. 3 znaki</small>
+      }
+    </div>
+
+    <div class="input-group">
+      <label for="doctorEmail">Email (musi być w domenie @med-clinic.pl)</label>
+      <input
+        id="doctorEmail"
+        formControlName="email"
+        type="email"
+        placeholder="lekarz@med-clinic.pl"
+      />
+      @if (doctorForm.get('email')?.touched && doctorForm.get('email')?.errors?.['invalidDomain']) {
+        <small class="error-msg">Wymagany email w domenie @med-clinic.pl</small>
+      }
+    </div>
+
+    @if (!isEditMode()) {
+      <div class="input-group">
+        <label for="doctorPass">Hasło</label>
+        <input
+          id="doctorPass"
+          formControlName="password"
+          type="password"
+          placeholder="Min. 6 znaków"
+        />
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="doctorForm.invalid" class="btn-submit">
+        {{ isEditMode() ? 'Zapisz zmiany' : 'Stwórz konto' }}
+      </button>
+    </div>
+  </form>
+</div>

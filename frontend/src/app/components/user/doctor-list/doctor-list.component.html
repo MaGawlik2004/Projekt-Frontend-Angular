@@ -1,0 +1,100 @@
+<div class="list-container">
+  <div class="header">
+    <h2>
+      <span class="material-symbols-outlined">clinical_notes</span>
+      {{ langService.t()['doctorList']['title'] }}
+    </h2>
+    <p>{{ langService.t()['doctorList']['subtitle'] }}</p>
+  </div>
+
+  <div class="filter-toolbar">
+    <div class="search-box">
+      <span class="material-symbols-outlined">search</span>
+      <input
+        type="text"
+        [placeholder]="langService.translate('Szukaj lekarza...', 'Search doctor...')"
+        [ngModel]="searchTerm()"
+        (ngModelChange)="searchTerm.set($event)"
+      />
+    </div>
+
+    <div class="sort-group">
+      <div class="select-box">
+        <label for="sortBySelect">{{ langService.translate('Sortuj według:', 'Sort by:') }}</label>
+        <select id="sortBySelect" [ngModel]="sortBy()" (ngModelChange)="sortBy.set($event)">
+          <option value="name">{{ langService.translate('Nazwiska', 'Name') }}</option>
+          <option value="date">
+            {{ langService.translate('Najbliższego terminu', 'Nearest date') }}
+          </option>
+        </select>
+      </div>
+      <button
+        type="button"
+        class="btn-direction"
+        (click)="toggleSortDirection()"
+        [title]="langService.translate('Zmień kierunek', 'Toggle direction')"
+      >
+        <span class="material-symbols-outlined">
+          {{ sortDirection() === 'asc' ? 'arrow_upward' : 'arrow_downward' }}
+        </span>
+      </button>
+    </div>
+
+    <label class="checkbox-filter">
+      <input
+        type="checkbox"
+        [ngModel]="onlyAvailable()"
+        (ngModelChange)="onlyAvailable.set($event)"
+      />
+      <span>{{ langService.translate('Tylko wolne terminy', 'Available only') }}</span>
+    </label>
+  </div>
+
+  <div class="doctor-grid">
+    @for (doc of filteredDoctors(); track doc._id) {
+      <div class="doctor-card" [class.no-term]="!doc.nextTerm">
+        <div class="card-body">
+          <div class="doc-icon-circle">
+            <span class="material-symbols-outlined">doctor</span>
+          </div>
+          <div class="doc-info">
+            <h3>{{ doc.full_name }}</h3>
+            <span class="specialty">{{ langService.t()['doctorList']['specialty'] }}</span>
+          </div>
+
+          <div class="next-available">
+            <div class="term-label">
+              <span class="material-symbols-outlined">calendar_today</span>
+              <small>{{ langService.t()['doctorList']['nextAvailable'] }}</small>
+            </div>
+            @if (doc.nextTerm) {
+              <p class="term-date">
+                {{ doc.nextTerm | date: 'dd.MM, HH:mm' : undefined : langService.currentLang() }}
+              </p>
+            } @else {
+              <p class="no-term">{{ langService.t()['doctorList']['noTerms'] }}</p>
+            }
+          </div>
+        </div>
+
+        <button type="button" class="btn-book" (click)="goToBooking(doc._id)">
+          {{
+            authService.isLoggedIn()
+              ? langService.t()['doctorList']['btnBook']
+              : langService.t()['doctorList']['btnLoginToBook']
+          }}
+          <span class="material-symbols-outlined">
+            {{ authService.isLoggedIn() ? 'arrow_forward' : 'login' }}
+          </span>
+        </button>
+      </div>
+    } @empty {
+      <div class="empty-state-container">
+        <span class="material-symbols-outlined">search_off</span>
+        <p>
+          {{ langService.translate('Brak lekarzy spełniających kryteria.', 'No doctors found.') }}
+        </p>
+      </div>
+    }
+  </div>
+</div>

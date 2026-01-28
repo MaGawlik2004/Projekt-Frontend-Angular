@@ -1,0 +1,36 @@
+# --- Systemowe ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# --- Frontend (Angular) ---
+**/node_modules/
+**/dist/
+**/.angular/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+**/.editorconfig
+
+# --- Backend (Python) ---
+**/venv/
+**/.venv/
+env/
+**/*.pyc
+**/__pycache__/
+*.pyo
+*.pyd
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.env
+
+# --- Docker ---
+.docker-get-started-helper/
+
+# --- Database ---
+# Jeśli dane MongoDB zapisywałyby się w folderze projektu (u nas są w wolumenie Dockera, ale na wszelki wypadek):
+mongo-data/

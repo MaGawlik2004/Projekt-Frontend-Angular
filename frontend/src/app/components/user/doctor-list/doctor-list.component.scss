@@ -1,0 +1,240 @@
+@import 'variables';
+
+* {
+  box-sizing: border-box;
+}
+
+.material-symbols-outlined {
+  font-size: 1.4rem;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.list-container {
+  padding: 2.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
+
+  .header {
+    margin-bottom: 2rem;
+    h2 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 2rem;
+      font-weight: 800;
+      color: $text-dark;
+      .material-symbols-outlined {
+        font-size: 2.2rem;
+        color: $primary-color;
+        background: $white;
+        padding: 10px;
+        border-radius: 14px;
+        box-shadow: $box-shadow;
+      }
+    }
+    p {
+      color: $text-muted;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.filter-toolbar {
+  display: flex;
+  align-items: flex-end;
+  gap: 1.5rem;
+  background: $white;
+  padding: 1.25rem 2rem;
+  border-radius: 20px;
+  border: 1px solid $border-color;
+  margin-bottom: 2.5rem;
+  box-shadow: $box-shadow;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-box {
+    flex: 2;
+    position: relative;
+    .material-symbols-outlined {
+      position: absolute;
+      left: 12px;
+      top: 13px;
+      color: $text-muted;
+    }
+    input {
+      width: 100%;
+      padding: 12px 12px 12px 42px;
+      border-radius: 12px;
+      border: 1px solid $border-color;
+      background: $bg-color;
+      font-family: inherit;
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  .sort-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    flex: 1;
+
+    .select-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        color: $text-light;
+        text-transform: uppercase;
+      }
+      select {
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid $border-color;
+        background: $bg-color;
+        cursor: pointer;
+        width: 100%;
+      }
+    }
+
+    .btn-direction {
+      background: $bg-color;
+      border: 1px solid $border-color;
+      padding: 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: $primary-color;
+      transition: $transition;
+      height: 41px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        background: $primary-light;
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  .checkbox-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    color: $text-dark;
+    white-space: nowrap;
+    margin-bottom: 10px;
+    input {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+  }
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.doctor-card {
+  background: $white;
+  border-radius: $border-radius-lg;
+  border: 1px solid $border-color;
+  display: flex;
+  flex-direction: column;
+  transition: $transition;
+  box-shadow: $box-shadow;
+  &.no-term {
+    opacity: 0.8;
+  }
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: $card-shadow;
+    border-color: $primary-color;
+  }
+
+  .card-body {
+    padding: 2rem;
+    text-align: center;
+    .doc-icon-circle {
+      width: 80px;
+      height: 80px;
+      background: $primary-light;
+      color: $primary-color;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      .material-symbols-outlined {
+        font-size: 2.5rem;
+      }
+    }
+    .doc-info {
+      h3 {
+        margin: 0;
+        font-weight: 800;
+      }
+      .specialty {
+        color: $primary-color;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+      }
+    }
+    .next-available {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: $bg-color;
+      border-radius: 12px;
+      .term-date {
+        color: $success-color;
+        font-weight: 800;
+        margin: 0;
+      }
+      .no-term {
+        color: $text-muted;
+        margin: 0;
+        font-style: italic;
+      }
+    }
+  }
+
+  .btn-book {
+    border: none;
+    background: $primary-gradient;
+    color: $white;
+    padding: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+}
+
+.empty-state-container {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  color: $text-muted;
+  .material-symbols-outlined {
+    font-size: 4rem;
+  }
+}

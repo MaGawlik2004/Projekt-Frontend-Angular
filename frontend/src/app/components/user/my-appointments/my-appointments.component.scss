@@ -1,0 +1,384 @@
+@import 'variables';
+
+.my-appointments-page {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2.5rem;
+  padding: 2.5rem;
+  background: $bg-color;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr;
+    padding: 1.5rem 1rem;
+    gap: 2rem;
+  }
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.section-container {
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: $text-dark;
+    margin-bottom: 1.5rem;
+
+    .material-symbols-outlined {
+      font-size: 1.8rem;
+      color: $primary-color;
+      background: $white;
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.divider {
+  height: 2px;
+  background: $border-color;
+  margin: 0.5rem 0;
+  opacity: 0.5;
+}
+
+.appt-card {
+  background: $white;
+  border-radius: 20px;
+  border: 1px solid $border-color;
+  box-shadow: $card-shadow;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  transition: $transition;
+  border-left: 6px solid transparent;
+
+  &.upcoming {
+    border-left-color: $primary-color;
+    &:hover {
+      transform: translateX(4px);
+    }
+  }
+
+  &.completed {
+    border-left-color: $completed-border;
+    background: $bg-surface-light;
+  }
+
+  .card-body {
+    display: flex;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    gap: 1.5rem;
+
+    @media (max-width: 600px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.25rem;
+    }
+  }
+}
+
+.date-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  height: 70px;
+  background: $primary-gradient;
+  border-radius: 16px;
+  color: $white;
+  flex-shrink: 0;
+
+  .day {
+    font-size: 1.4rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .month {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 2px;
+    opacity: 0.9;
+  }
+
+  &.gray {
+    background: #94a3b8;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: row;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 12px;
+  }
+}
+
+.appt-info {
+  flex: 1;
+  h4 {
+    margin: 0 0 6px 0;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: $text-dark;
+  }
+
+  .time,
+  .reason {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    margin: 4px 0;
+    color: $text-muted;
+    .material-symbols-outlined {
+      font-size: 1.1rem;
+    }
+  }
+
+  .time strong {
+    color: $text-dark;
+  }
+}
+
+.appt-actions {
+  display: flex;
+  gap: 10px;
+
+  button {
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: $transition;
+    border: none;
+  }
+
+  .btn-cancel {
+    background: #fee2e2;
+    color: $error-color;
+    &:hover {
+      background: $error-color;
+      color: $white;
+    }
+  }
+
+  .btn-history {
+    background: $primary-light;
+    color: $primary-color;
+    border: 1px solid rgba($primary-color, 0.1);
+    &:hover {
+      background: $primary-color;
+      color: $white;
+    }
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    button {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+}
+
+.history-dropdown-area {
+  background: $white;
+  border-top: 1px solid $border-color;
+  padding: 1.5rem;
+  animation: slideDown 0.3s ease-out;
+
+  .dropdown-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+
+  .dropdown-item {
+    .label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: $text-light;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+    }
+    p {
+      margin: 0;
+      color: $text-dark;
+      line-height: 1.6;
+    }
+
+    .recommendation-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      li {
+        margin-bottom: 4px;
+        color: $text-dark;
+      }
+    }
+  }
+
+  .notes-full {
+    background: $bg-surface-light;
+    padding: 1.25rem;
+    border-radius: 12px;
+    border: 1px solid $border-color;
+  }
+}
+
+.medical-sidebar {
+  background: $white;
+  border-radius: $border-radius-lg;
+  padding: 2rem 1.5rem;
+  border: 1px solid $border-color;
+  box-shadow: $card-shadow;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 5rem);
+
+  @media (min-width: 1201px) {
+    position: sticky;
+    top: 2.5rem;
+  }
+
+  .sidebar-header {
+    margin-bottom: 1.5rem;
+    h3 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 4px 0;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: $text-dark;
+      .material-symbols-outlined {
+        color: $primary-color;
+      }
+    }
+    p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: $text-muted;
+    }
+  }
+}
+
+.sidebar-scroll {
+  overflow-y: auto;
+  padding-right: 4px;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 10px;
+  }
+}
+
+.history-entry {
+  background: $bg-surface-light;
+  border-radius: 14px;
+  margin-bottom: 0.75rem;
+  border: 1px solid $border-color;
+  overflow: hidden;
+  transition: $transition;
+
+  &.expanded {
+    border-color: $primary-color;
+    background: $white;
+  }
+
+  .entry-header {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+
+    .entry-meta {
+      display: flex;
+      flex-direction: column;
+      .entry-date {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: $primary-color;
+      }
+      .entry-diag {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: $text-dark;
+        margin-top: 2px;
+      }
+    }
+    .chevron-icon {
+      color: $text-light;
+      transition: transform 0.2s;
+    }
+  }
+
+  .entry-body {
+    padding: 0 1rem 1rem 1rem;
+    border-top: 1px solid rgba($border-color, 0.5);
+    font-size: 0.85rem;
+    p {
+      margin: 0.75rem 0;
+      color: $text-dark;
+      line-height: 1.5;
+    }
+    ul {
+      padding-left: 1.2rem;
+      margin: 0.5rem 0;
+      li {
+        margin-bottom: 4px;
+      }
+    }
+  }
+}
+
+.empty-state,
+.empty-sidebar {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: $white;
+  border-radius: 16px;
+  border: 2px dashed $border-color;
+  color: $text-muted;
+  font-weight: 600;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

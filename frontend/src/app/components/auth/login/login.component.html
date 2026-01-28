@@ -1,0 +1,48 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h2>{{ langService.t()['auth']['loginTitle'] }}</h2>
+      <p>{{ langService.t()['auth']['loginSubtitle'] }}</p>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <div class="input-wrapper">
+        <span class="material-symbols-outlined">mail</span>
+        <input
+          type="email"
+          formControlName="email"
+          [placeholder]="langService.t()['auth']['emailPlaceholder']"
+        />
+      </div>
+      @if (loginForm.get('email')?.touched && loginForm.get('email')?.invalid) {
+        <small class="error-text">{{
+          langService.translate('Wprowadź poprawny email', 'Enter valid email')
+        }}</small>
+      }
+
+      <div class="input-wrapper">
+        <span class="material-symbols-outlined">lock</span>
+        <input
+          type="password"
+          formControlName="password"
+          [placeholder]="langService.t()['auth']['passwordPlaceholder']"
+        />
+      </div>
+      @if (loginForm.get('password')?.touched && loginForm.get('password')?.invalid) {
+        <small class="error-text">{{
+          langService.translate('Hasło jest wymagane', 'Password is required')
+        }}</small>
+      }
+
+      <button type="submit" class="btn-login" [disabled]="loginForm.invalid">
+        <span class="material-symbols-outlined">login</span>
+        {{ langService.t()['auth']['btnLogin'] }}
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      {{ langService.t()['auth']['noAccount'] }}
+      <a routerLink="/register">{{ langService.t()['auth']['registerNow'] }}</a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="doctor-container">
+  <h2>
+    <span class="material-symbols-outlined">event_note</span>
+    {{ langService.t()['doctorSchedule']['title'] }}
+  </h2>
+
+  <mg-calendar-component
+    [appointments]="appointments()"
+    (appointmentClicked)="onAppointmentClick($event)"
+  >
+  </mg-calendar-component>
+</div>

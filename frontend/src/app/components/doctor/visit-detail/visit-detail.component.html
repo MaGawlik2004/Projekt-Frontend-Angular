@@ -1,0 +1,204 @@
+@if (appointment(); as appt) {
+  <div class="visit-container">
+    @if (!authService.isActive()) {
+      <div class="suspension-banner">
+        <span class="material-symbols-outlined">lock</span>
+        <p>
+          {{
+            langService.translate(
+              'Twoje konto jest nieaktywne. Możliwość zapisu historii medycznej została zablokowana.',
+              'Your account is inactive. Saving medical history is disabled.'
+            )
+          }}
+        </p>
+      </div>
+    }
+
+    <header class="visit-header">
+      <div class="header-left">
+        <button type="button" routerLink="/doctor/schedule" class="btn-back">
+          <span class="material-symbols-outlined">arrow_back</span>
+          {{ langService.t()['visitDetail']['backToSchedule'] }}
+        </button>
+        <div class="patient-title">
+          <h1>{{ appt.patient_data.full_name }}</h1>
+          <span class="email-label">
+            <span class="material-symbols-outlined">mail</span>{{ appt.patient_data.email }}
+          </span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-badge" [class.completed]="appt.status === 'completed'">
+          <span class="material-symbols-outlined">
+            {{ appt.status === 'completed' ? 'check_circle' : 'pending' }}
+          </span>
+          {{
+            appt.status === 'completed'
+              ? langService.currentLang() === 'pl'
+                ? 'Zakończona'
+                : 'Completed'
+              : appt.status
+          }}
+        </div>
+      </div>
+    </header>
+
+    <div class="visit-content-grid">
+      <aside class="sidebar">
+        <section class="info-card reason-box">
+          <h3>
+            <span class="material-symbols-outlined">assignment_ind</span>
+            {{ langService.t()['visitDetail']['reasonTitle'] }}
+          </h3>
+          <p class="reason-text">{{ appt.details.reason_for_visit }}</p>
+          @if (appt.details.additional_notes) {
+            <div class="meta">
+              <strong>{{ langService.t()['visitDetail']['patientNotes'] }}</strong>
+              <p>{{ appt.details.additional_notes }}</p>
+            </div>
+          }
+        </section>
+
+        <section class="info-card history-box">
+          <h3>
+            <span class="material-symbols-outlined">history</span>
+            {{ langService.t()['visitDetail']['historyTitle'] }}
+          </h3>
+          <div class="history-scroll-area">
+            @for (item of history(); track item._id) {
+              <div class="history-entry" [class.expanded]="expandedHistoryId() === item._id">
+                <div
+                  class="entry-header"
+                  (click)="toggleHistory(item._id)"
+                  (keydown.enter)="toggleHistory(item._id)"
+                  role="button"
+                  tabindex="0"
+                >
+                  <span class="date">{{
+                    item.date | date: 'dd.MM.yyyy' : undefined : langService.currentLang()
+                  }}</span>
+                  <span class="diagnosis-preview">{{ item.diagnosis }}</span>
+                  <span class="material-symbols-outlined toggle-icon">
+                    {{ expandedHistoryId() === item._id ? 'expand_less' : 'expand_more' }}
+                  </span>
+                </div>
+                @if (expandedHistoryId() === item._id) {
+                  <div class="entry-details">
+                    <p>
+                      <strong>{{ langService.t()['visitDetail']['treatment'] }}</strong>
+                      {{ item.treatment_notes }}
+                    </p>
+                    <p>
+                      <strong>{{ langService.t()['visitDetail']['recommendations'] }}</strong>
+                      {{ item.recommendations.join(', ') }}
+                    </p>
+                  </div>
+                }
+              </div>
+            } @empty {
+              <p class="empty-msg">{{ langService.t()['visitDetail']['emptyHistory'] }}</p>
+            }
+          </div>
+        </section>
+      </aside>
+
+      <main class="exam-area">
+        <section class="exam-card">
+          <h3>
+            <span class="material-symbols-outlined">edit_document</span>
+            {{ langService.t()['visitDetail']['examCard'] }}
+          </h3>
+
+          <form [formGroup]="visitForm">
+            <div class="form-group">
+              <label for="diagnosis">{{ langService.t()['visitDetail']['diagnosisLabel'] }}</label>
+              <textarea
+                id="diagnosis"
+                formControlName="diagnosis"
+                [placeholder]="langService.t()['visitDetail']['diagnosisPlaceholder']"
+                rows="4"
+              ></textarea>
+              @if (visitForm.get('diagnosis')?.touched && visitForm.get('diagnosis')?.invalid) {
+                <small class="error-msg" style="color: red">Wymagane min. 3 znaki</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="treatment">{{
+                langService.t()['visitDetail']['treatmentNotesLabel']
+              }}</label>
+              <textarea
+                id="treatment"
+                formControlName="treatment_notes"
+                [placeholder]="langService.t()['visitDetail']['treatmentNotesPlaceholder']"
+                rows="4"
+              ></textarea>
+              @if (
+                visitForm.get('treatment_notes')?.touched &&
+                visitForm.get('treatment_notes')?.invalid
+              ) {
+                <small class="error-msg" style="color: red">Wymagane min. 5 znaków</small>
+              }
+            </div>
+
+            <div class="form-group">
+              <label for="recomm">{{
+                langService.t()['visitDetail']['recommendationsLabel']
+              }}</label>
+              <input
+                id="recomm"
+                type="text"
+                formControlName="recommendationsInput"
+                [placeholder]="langService.t()['visitDetail']['recommendationsPlaceholder']"
+              />
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="button"
+                class="btn-submit-visit"
+                (click)="onFinishVisitClick()"
+                [disabled]="
+                  visitForm.invalid || appt.status === 'completed' || !authService.isActive()
+                "
+                [class.locked-btn]="!authService.isActive()"
+              >
+                <span class="material-symbols-outlined">
+                  {{
+                    !authService.isActive()
+                      ? 'lock'
+                      : appt.status === 'completed'
+                        ? 'task_alt'
+                        : 'save_as'
+                  }}
+                </span>
+                {{
+                  !authService.isActive()
+                    ? langService.translate('Konto zawieszone', 'Account suspended')
+                    : appt.status === 'completed'
+                      ? langService.t()['visitDetail']['btnAlreadyFinished']
+                      : langService.t()['visitDetail']['btnFinish']
+                }}
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  @if (isConfirmModalOpen()) {
+    <mg-confirm-modal
+      [title]="langService.translate('Zakończ wizytę', 'Finish Visit')"
+      [message]="
+        langService.translate('Potwierdzasz zakończenie wizyty?', 'Confirm finishing visit?')
+      "
+      (confirmed)="submitVisit()"
+      (cancelled)="isConfirmModalOpen.set(false)"
+    ></mg-confirm-modal>
+  }
+} @else {
+  <div class="loading-state">
+    <p>{{ langService.t()['visitDetail']['loading'] }}</p>
+  </div>
+}

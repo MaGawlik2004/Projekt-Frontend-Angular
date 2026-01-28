@@ -1,0 +1,53 @@
+<div class="user-dashboard">
+  <aside class="dashboard-sidebar">
+    <div class="user-profile">
+      <div class="avatar">
+        @if (isLoggedIn()) {
+          {{ authService.userName()[0] }}
+        } @else {
+          <span class="material-symbols-outlined">person</span>
+        }
+      </div>
+      <div class="user-meta">
+        <span class="status-text">
+          {{
+            isLoggedIn()
+              ? langService.t()['userPanel']['logged']
+              : langService.t()['userPanel']['guest']
+          }}
+        </span>
+        <span class="name-text">
+          {{ isLoggedIn() ? authService.userName() : langService.t()['userPanel']['browsingMode'] }}
+        </span>
+      </div>
+    </div>
+
+    <nav class="nav-menu">
+      <a routerLink="/user/doctors" routerLinkActive="active" class="nav-item">
+        <span class="material-symbols-outlined">person_search</span>
+        <span>{{ langService.t()['userPanel']['doctorList'] }}</span>
+      </a>
+
+      @if (isLoggedIn()) {
+        <a routerLink="/user/my-appointments" routerLinkActive="active" class="nav-item">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <span>{{ langService.t()['userPanel']['myAppointments'] }}</span>
+        </a>
+      }
+    </nav>
+
+    @if (!isLoggedIn()) {
+      <div class="guest-info">
+        <span class="material-symbols-outlined">info</span>
+        <p>{{ langService.t()['userPanel']['loginToBook'] }}</p>
+        <a routerLink="/login" class="btn-login-small">
+          {{ langService.t()['userPanel']['btnLogin'] }}
+        </a>
+      </div>
+    }
+  </aside>
+
+  <main class="dashboard-content">
+    <router-outlet />
+  </main>
+</div>

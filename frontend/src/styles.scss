@@ -1,0 +1,37 @@
+// src/styles.scss
+@import 'variables';
+
+:root {
+  --bg-color: #f8fafc;
+  --bg-surface-light: #f1f5f9;
+  --white: #ffffff;
+  --text-dark: #1e293b;
+  --text-muted: #64748b;
+  --text-light: #94a3b8;
+  --border-color: #e2e8f0;
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  --bg-gradient: radial-gradient(circle at top right, #fdfdfd, #e9eff5);
+  --input-shadow: 0 0 0 4px rgba(42, 125, 225, 0.15);
+  --dark-mode-filter: 0;
+}
+
+body.dark-mode {
+  --bg-color: #0f172a !important;
+  --bg-surface-light: #1e293b !important;
+  --white: #1e293b !important;
+  --text-dark: #f1f5f9 !important;
+  --text-muted: #94a3b8 !important;
+  --text-light: #64748b !important;
+  --border-color: #334155 !important;
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+  --bg-gradient: radial-gradient(circle at top right, #0f172a, #1e293b) !important;
+  --input-shadow: 0 0 0 4px rgba(42, 125, 225, 0.3) !important;
+  --dark-mode-filter: 1 !important;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  margin: 0;
+  transition: background-color 0.3s ease;
+}

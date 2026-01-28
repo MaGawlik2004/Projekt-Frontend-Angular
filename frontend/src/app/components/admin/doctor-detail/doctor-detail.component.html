@@ -1,0 +1,287 @@
+<div class="detail-container">
+  <aside class="sidebar">
+    <button type="button" class="btn-back" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      {{ langService.t()['common']['back'] }}
+    </button>
+
+    @if (doctor(); as doc) {
+      <div class="card profile-card">
+        <div class="profile-header">
+          <div class="avatar">{{ doc.full_name[0] }}</div>
+          <h2>{{ doc.full_name }}</h2>
+          <span class="role-tag">{{ langService.t()['doctorDetail']['management'] }}</span>
+        </div>
+
+        <div class="info-list">
+          <div class="info-item">
+            <span class="label">{{ langService.t()['admin']['labelEmail'] }}</span>
+            <span>{{ doc.email }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Status</span>
+            <span [class]="doc.is_active ? 'active-txt' : 'inactive-txt'">
+              {{
+                doc.is_active
+                  ? langService.t()['doctorDetail']['active']
+                  : langService.t()['doctorDetail']['blocked']
+              }}
+            </span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn-primary" (click)="openModel('schedule')">
+            <span class="material-symbols-outlined">calendar_add_on</span>
+            {{ langService.t()['doctorDetail']['genSchedule'] }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="openModel('password')">
+            <span class="material-symbols-outlined">lock_reset</span>
+            {{ langService.t()['doctorDetail']['resetPass'] }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="openModel('activity')">
+            <span class="material-symbols-outlined">published_with_changes</span>
+            {{ langService.t()['doctorDetail']['changeStatus'] }}
+          </button>
+        </div>
+      </div>
+    }
+  </aside>
+
+  <main class="calendar-section">
+    <mg-calendar-component
+      [appointments]="appointments()"
+      (appointmentClicked)="handleAppointmentClick($event)"
+    >
+    </mg-calendar-component>
+  </main>
+
+  @if (activeModel()) {
+    <div
+      class="modal-overlay"
+      (click)="closeModel()"
+      (keydown.escape)="closeModel()"
+      role="presentation"
+      tabindex="-1"
+    >
+      <div
+        class="modal-content"
+        (click)="$event.stopPropagation()"
+        (keydown)="$event.stopPropagation()"
+        role="dialog"
+        aria-modal="true"
+        tabindex="0"
+      >
+        @if (activeModel() === 'schedule') {
+          <form [formGroup]="scheduleForm">
+            <h3>
+              {{ langService.t()['doctorDetail']['genTitle'] }} -
+              {{ langService.translate('Krok', 'Step') }} {{ currentStep() }}/2
+            </h3>
+
+            @if (currentStep() === 1) {
+              <div class="form-group">
+                <label for="bulkStart">{{ langService.t()['doctorDetail']['startWork'] }}:</label>
+                <input
+                  id="bulkStart"
+                  type="datetime-local"
+                  formControlName="start_time"
+                  (change)="onBulkStartTimeChange()"
+                />
+              </div>
+              <div class="form-group">
+                <label for="bulkEnd">{{ langService.t()['doctorDetail']['endWork'] }}:</label>
+                <input id="bulkEnd" type="datetime-local" formControlName="end_time" />
+              </div>
+              <div class="info-box">
+                <p>
+                  {{ langService.t()['doctorDetail']['visitDuration'] }}: <strong>30 min</strong>
+                </p>
+                <small>{{
+                  langService.translate(
+                    'Interwał ustalony zgodnie z wymogami.',
+                    'Interval fixed according to requirements.'
+                  )
+                }}</small>
+              </div>
+              <div class="modal-btns">
+                <button
+                  type="button"
+                  (click)="goToStep2()"
+                  class="btn-confirm"
+                  [disabled]="
+                    scheduleForm.get('start_time')?.invalid || scheduleForm.get('end_time')?.invalid
+                  "
+                >
+                  {{ langService.t()['common']['next'] }}
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+                <button type="button" (click)="closeModel()" class="btn-cancel">
+                  {{ langService.t()['common']['cancel'] }}
+                </button>
+              </div>
+            }
+
+            @if (currentStep() === 2) {
+              <div class="breaks-section" formArrayName="breaks">
+                <div class="section-header">
+                  <span class="label-heading"
+                    >{{ langService.t()['doctorDetail']['breaks'] }}:</span
+                  >
+                  <button type="button" class="btn-add-break" (click)="addBreak()">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    {{ langService.t()['doctorDetail']['addBreak'] }}
+                  </button>
+                </div>
+
+                <div class="breaks-list">
+                  @for (br of breaks.controls; track $index) {
+                    <div class="break-item" [formGroupName]="$index">
+                      <div class="break-inputs">
+                        <input
+                          type="datetime-local"
+                          formControlName="start"
+                          (change)="onBreakStartChange($index)"
+                          aria-label="Break start"
+                        />
+                        <span class="to-label">{{ langService.translate('do', 'to') }}</span>
+                        <input type="datetime-local" formControlName="end" aria-label="Break end" />
+                      </div>
+                      <button
+                        type="button"
+                        class="btn-remove-break"
+                        (click)="removeBreak($index)"
+                        aria-label="Remove break"
+                      >
+                        <span class="material-symbols-outlined">delete</span>
+                      </button>
+                    </div>
+                  } @empty {
+                    <p class="empty-txt">
+                      {{
+                        langService.translate('Brak zdefiniowanych przerw.', 'No breaks defined.')
+                      }}
+                    </p>
+                  }
+                </div>
+              </div>
+
+              <div class="modal-btns">
+                <button type="button" (click)="currentStep.set(1)" class="btn-secondary">
+                  <span class="material-symbols-outlined">arrow_back</span>
+                  {{ langService.t()['common']['back'] }}
+                </button>
+                <button
+                  type="button"
+                  (click)="confirmGenerateSchedule()"
+                  class="btn-confirm"
+                  [disabled]="scheduleForm.invalid"
+                >
+                  {{ langService.t()['doctorDetail']['btnGenerate'] }}
+                </button>
+              </div>
+            }
+          </form>
+        }
+
+        @if (activeModel() === 'edit-appt') {
+          <form [formGroup]="editApptForm">
+            <h3>{{ langService.translate('Edycja godziny wizyty', 'Edit appointment time') }}</h3>
+            <div class="form-group">
+              <label for="editStart">{{ langService.t()['doctorDetail']['startWork'] }}:</label>
+              <input
+                id="editStart"
+                type="datetime-local"
+                formControlName="start"
+                (change)="onStartTimeChange()"
+              />
+            </div>
+            <div class="form-group">
+              <label for="editEnd">{{ langService.t()['doctorDetail']['endWork'] }}:</label>
+              <input id="editEnd" type="datetime-local" formControlName="end" />
+            </div>
+            <div class="modal-btns-vertical">
+              <button
+                type="button"
+                (click)="confirmEditAppointment()"
+                class="btn-confirm"
+                [disabled]="editApptForm.invalid"
+              >
+                <span class="material-symbols-outlined">check_circle</span>
+                {{ langService.t()['common']['save'] }}
+              </button>
+              <button type="button" (click)="confirmDeleteAppointment()" class="btn-danger">
+                <span class="material-symbols-outlined">delete</span>
+                {{ langService.translate('Usuń wizytę', 'Delete appointment') }}
+              </button>
+              <button type="button" (click)="closeModel()" class="btn-cancel">
+                {{ langService.t()['common']['cancel'] }}
+              </button>
+            </div>
+          </form>
+        }
+
+        @if (activeModel() === 'password') {
+          <form [formGroup]="passwordForm" class="simple-form">
+            <h3>{{ langService.t()['doctorDetail']['resetPass'] }}</h3>
+            <div class="form-group">
+              <label for="newPassInput" class="sr-only">{{
+                langService.translate('Nowe hasło', 'New password')
+              }}</label>
+              <input
+                id="newPassInput"
+                type="password"
+                formControlName="newPassword"
+                [placeholder]="langService.translate('Nowe hasło', 'New password')"
+                class="modal-input"
+              />
+              @if (
+                passwordForm.get('newPassword')?.touched && passwordForm.get('newPassword')?.invalid
+              ) {
+                <small class="error-msg" style="color: #ef4444; font-weight: 600"
+                  >Min. 6 znaków</small
+                >
+              }
+            </div>
+            <div class="modal-btns">
+              <button
+                type="button"
+                (click)="confirmPasswordChange()"
+                class="btn-confirm"
+                [disabled]="passwordForm.invalid"
+              >
+                {{ langService.t()['common']['save'] }}
+              </button>
+              <button type="button" (click)="closeModel()" class="btn-cancel">
+                {{ langService.t()['common']['cancel'] }}
+              </button>
+            </div>
+          </form>
+        }
+
+        @if (activeModel() === 'activity') {
+          <div class="simple-form">
+            <h3>{{ langService.t()['doctorDetail']['confirmStatus'] }}</h3>
+            <div class="modal-btns">
+              <button type="button" (click)="confirmToggleActivity()" class="btn-confirm">
+                {{ langService.t()['common']['yes'] }}
+              </button>
+              <button type="button" (click)="closeModel()" class="btn-cancel">
+                {{ langService.t()['common']['no'] }}
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>
+
+@if (isConfirmModalOpen()) {
+  <mg-confirm-modal
+    [title]="confirmModalTitle()"
+    [message]="confirmModalMessage()"
+    (confirmed)="handleModalConfirmed()"
+    (cancelled)="isConfirmModalOpen.set(false)"
+  ></mg-confirm-modal>
+}

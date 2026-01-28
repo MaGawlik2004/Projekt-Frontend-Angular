@@ -1,0 +1,74 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1>{{ langService.t()['register']['title'] }}</h1>
+      <p>{{ langService.t()['register']['subtitle'] }}</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="handleRegister()">
+      <div class="form-group">
+        <label for="regName">{{ langService.t()['register']['labelName'] }}</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">person</span>
+          <input
+            id="regName"
+            type="text"
+            formControlName="full_name"
+            [placeholder]="langService.t()['admin']['placeholderName']"
+          />
+        </div>
+        @if (registerForm.get('full_name')?.touched && registerForm.get('full_name')?.invalid) {
+          <small class="error-text">{{ langService.t()['register']['nameError'] }}</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="regEmail">{{ langService.t()['register']['labelEmail'] }}</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">mail</span>
+          <input
+            id="regEmail"
+            type="email"
+            formControlName="email"
+            [placeholder]="langService.t()['admin']['placeholderEmail']"
+          />
+        </div>
+        @if (registerForm.get('email')?.touched && registerForm.get('email')?.invalid) {
+          <small class="error-text">{{ langService.t()['register']['emailError'] }}</small>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="regPass">{{ langService.t()['register']['labelPass'] }}</label>
+        <div class="input-wrapper">
+          <span class="material-symbols-outlined">lock</span>
+          <input
+            id="regPass"
+            type="password"
+            formControlName="password"
+            [placeholder]="langService.t()['admin']['placeholderPass']"
+          />
+        </div>
+        @if (registerForm.get('password')?.touched && registerForm.get('password')?.invalid) {
+          <small class="error-text">{{ langService.t()['register']['passError'] }}</small>
+        }
+      </div>
+
+      <button type="submit" class="btn-register" [disabled]="registerForm.invalid || isLoading()">
+        <span class="material-symbols-outlined">
+          {{ isLoading() ? 'sync' : 'person_add' }}
+        </span>
+        {{
+          isLoading()
+            ? langService.t()['register']['processing']
+            : langService.t()['register']['btnSubmit']
+        }}
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      {{ langService.t()['register']['hasAccount'] }}
+      <a routerLink="/login">{{ langService.t()['register']['loginNow'] }}</a>
+    </div>
+  </div>
+</div>

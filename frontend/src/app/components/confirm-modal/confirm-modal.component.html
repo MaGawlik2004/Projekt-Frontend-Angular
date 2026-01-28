@@ -1,0 +1,31 @@
+<div
+  class="modal-overlay"
+  (click)="onCancel()"
+  (keydown.escape)="onCancel()"
+  tabindex="-1"
+  role="presentation"
+>
+  <div
+    class="modal-content"
+    (click)="$event.stopPropagation()"
+    (keydown)="$event.stopPropagation()"
+    role="dialog"
+    aria-modal="true"
+    tabindex="0"
+  >
+    <div class="icon-warning">
+      <span class="material-symbols-outlined">warning</span>
+    </div>
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel" (click)="onCancel()">
+        {{ t()['common']['no'] }}
+      </button>
+      <button type="button" class="btn-confirm" (click)="onConfirm()">
+        {{ t()['common']['yes'] }}
+      </button>
+    </div>
+  </div>
+</div>

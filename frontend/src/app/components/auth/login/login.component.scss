@@ -1,0 +1,150 @@
+@import 'variables';
+
+* {
+  box-sizing: border-box;
+}
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  background: $bg-gradient;
+  padding: 20px;
+}
+
+.auth-card {
+  background: $white-glass;
+  backdrop-filter: $glass-blur;
+  padding: 3rem 4rem;
+  border-radius: $border-radius-lg;
+  box-shadow: $card-shadow;
+  border: $border-light;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 550px) {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  h2 {
+    color: $text-dark;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.03em;
+
+    @media (max-width: 480px) {
+      font-size: 1.8rem;
+    }
+  }
+
+  p {
+    color: $text-muted;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+
+  .material-symbols-outlined {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $text-light;
+    font-size: 1.4rem;
+    transition: $transition;
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    padding: 16px 20px 16px 52px;
+    border: 1.5px solid $border-color;
+    border-radius: $border-radius-md;
+    font-size: 1rem;
+    background-color: rgba($white, 0.9);
+    color: $text-dark;
+    transition: $transition;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $primary-color;
+      box-shadow: $input-focus-shadow;
+      background-color: $white;
+
+      & ~ .material-symbols-outlined {
+        color: $primary-color;
+      }
+    }
+  }
+}
+
+.btn-login {
+  width: 100%;
+  padding: 16px;
+  background: $primary-gradient;
+  color: $white;
+  border: none;
+  border-radius: $border-radius-md;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: $transition;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  &:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 10px 20px rgba($primary-color, 0.2);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 2rem;
+  color: $text-muted;
+  font-size: 0.95rem;
+  line-height: 1.4;
+
+  a {
+    color: $primary-color;
+    font-weight: 700;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 5px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

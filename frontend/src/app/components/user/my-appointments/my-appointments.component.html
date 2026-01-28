@@ -1,0 +1,173 @@
+<div class="my-appointments-page">
+  <div class="main-content">
+    <section class="section-container">
+      <h2 class="section-title">
+        <span class="material-symbols-outlined">upcoming</span>
+        {{ t()['myAppointments']['upcomingTitle'] }}
+      </h2>
+      <div class="appointments-list">
+        @for (appt of upcoming(); track appt._id) {
+          <div class="appt-card upcoming">
+            <div class="card-body">
+              <div class="date-badge">
+                <span class="day">{{ appt.start_time | date: 'dd' }}</span>
+                <span class="month">{{
+                  appt.start_time | date: 'MMM' : undefined : langService.currentLang()
+                }}</span>
+              </div>
+              <div class="appt-info">
+                <h4>{{ t()['myAppointments']['visitWithDoctor'] }}</h4>
+                <p class="time">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <strong>{{ appt.start_time | date: 'HH:mm' }}</strong>
+                </p>
+                <p class="reason">
+                  {{ t()['myAppointments']['reason'] }} {{ appt.details.reason_for_visit }}
+                </p>
+              </div>
+              <div class="appt-actions">
+                <button type="button" class="btn-cancel" (click)="openCancelModal(appt._id)">
+                  <span class="material-symbols-outlined">event_busy</span>
+                  {{ t()['myAppointments']['btnCancel'] }}
+                </button>
+              </div>
+            </div>
+          </div>
+        } @empty {
+          <div class="empty-state">{{ t()['myAppointments']['emptyUpcoming'] }}</div>
+        }
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="section-container">
+      <h2 class="section-title">
+        <span class="material-symbols-outlined">history</span>
+        {{ t()['myAppointments']['completedTitle'] }}
+      </h2>
+      <div class="appointments-list">
+        @for (appt of completed(); track appt._id) {
+          <div class="appt-card completed" [class.is-expanded]="expandedVisitIds().has(appt._id)">
+            <div class="card-body">
+              <div class="date-badge gray">
+                <span class="day">{{ appt.start_time | date: 'dd' }}</span>
+                <span class="month">{{
+                  appt.start_time | date: 'MMM' : undefined : langService.currentLang()
+                }}</span>
+              </div>
+              <div class="appt-info">
+                <h4>{{ t()['myAppointments']['visitCompleted'] }}</h4>
+                <p>
+                  {{ t()['myAppointments']['dateLabel'] }}
+                  {{ appt.start_time | date: 'dd.MM.yyyy' : undefined : langService.currentLang() }}
+                </p>
+              </div>
+              <div class="appt-actions">
+                @if (appt.medical_history) {
+                  <button type="button" class="btn-history" (click)="toggleVisitHistory(appt._id)">
+                    <span class="material-symbols-outlined">
+                      {{ expandedVisitIds().has(appt._id) ? 'visibility_off' : 'visibility' }}
+                    </span>
+                    {{
+                      expandedVisitIds().has(appt._id)
+                        ? t()['myAppointments']['btnHideDetails']
+                        : t()['myAppointments']['btnShowDetails']
+                    }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            @if (expandedVisitIds().has(appt._id) && appt.medical_history; as h) {
+              <div class="history-dropdown-area">
+                <div class="dropdown-grid">
+                  <div class="dropdown-item">
+                    <span class="label">{{ t()['myAppointments']['diagnosis'] }}</span>
+                    <p>{{ h.diagnosis }}</p>
+                  </div>
+                  <div class="dropdown-item">
+                    <span class="label">{{ t()['myAppointments']['recommendations'] }}</span>
+                    <ul class="recommendation-list">
+                      @for (r of h.recommendations; track r) {
+                        <li>{{ r }}</li>
+                      }
+                    </ul>
+                  </div>
+                </div>
+                <div class="dropdown-item notes-full">
+                  <span class="label">{{ t()['myAppointments']['treatmentNotes'] }}</span>
+                  <p>{{ h.treatment_notes }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        } @empty {
+          <div class="empty-state">{{ t()['myAppointments']['emptyHistory'] }}</div>
+        }
+      </div>
+    </section>
+  </div>
+
+  <aside class="medical-sidebar">
+    <div class="sidebar-header">
+      <h3>
+        <span class="material-symbols-outlined">folder_shared</span>
+        {{ t()['myAppointments']['sidebarTitle'] }}
+      </h3>
+      <p>{{ t()['myAppointments']['sidebarSubtitle'] }}</p>
+    </div>
+
+    <div class="sidebar-scroll">
+      @for (h of fullHistory(); track h._id) {
+        <div class="history-entry" [class.expanded]="expandedSidebarId() === h._id">
+          <div
+            class="entry-header"
+            (click)="toggleSidebarHistory(h._id)"
+            (keydown.enter)="toggleSidebarHistory(h._id)"
+            role="button"
+            tabindex="0"
+          >
+            <div class="entry-meta">
+              <span class="entry-date">{{
+                h.date | date: 'dd.MM.yyyy' : undefined : langService.currentLang()
+              }}</span>
+              <span class="entry-diag">{{ h.diagnosis }}</span>
+            </div>
+            <span class="material-symbols-outlined chevron-icon">
+              {{ expandedSidebarId() === h._id ? 'expand_less' : 'expand_more' }}
+            </span>
+          </div>
+
+          @if (expandedSidebarId() === h._id) {
+            <div class="entry-body">
+              <p>
+                <strong>{{ t()['myAppointments']['treatmentLabel'] }}</strong
+                ><br />{{ h.treatment_notes }}
+              </p>
+              <p>
+                <strong>{{ t()['myAppointments']['recommendations'] }}:</strong>
+              </p>
+              <ul>
+                @for (r of h.recommendations; track r) {
+                  <li>{{ r }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      } @empty {
+        <div class="empty-sidebar">{{ t()['myAppointments']['emptySidebar'] }}</div>
+      }
+    </div>
+  </aside>
+</div>
+
+@if (isCancelModalOpen()) {
+  <mg-confirm-modal
+    [title]="$any(t()['myAppointments']['cancelConfirmTitle']) || 'Potwierdź'"
+    [message]="$any(t()['myAppointments']['cancelConfirm'])"
+    (confirmed)="handleCancelConfirm()"
+    (cancelled)="isCancelModalOpen.set(false)"
+  ></mg-confirm-modal>
+}

@@ -1,0 +1,55 @@
+<nav class="main-navbar">
+  <div class="nav-logo">
+    <a routerLink="/">
+      <span class="material-symbols-outlined logo-icon">local_hospital</span>
+      Klinika<span>Med</span>
+    </a>
+  </div>
+
+  <div class="nav-links">
+    <button type="button" class="btn-theme" (click)="toggleLanguage()">
+      <span class="lang-text">{{ langService.currentLang() | uppercase }}</span>
+    </button>
+
+    <button
+      type="button"
+      class="btn-theme"
+      (click)="toggleTheme()"
+      [title]="
+        isDarkMode() ? langService.t()['nav']['themeLight'] : langService.t()['nav']['themeDark']
+      "
+    >
+      <span class="material-symbols-outlined">
+        {{ isDarkMode() ? 'light_mode' : 'dark_mode' }}
+      </span>
+    </button>
+
+    @if (!isLoggedIn()) {
+      <a routerLink="/register" class="link-register">
+        <span class="material-symbols-outlined">person_add</span>
+        {{ langService.t()['nav']['register'] }}
+      </a>
+      <a routerLink="/login" class="btn-login">
+        <span class="material-symbols-outlined">login</span>
+        {{ langService.t()['nav']['login'] }}
+      </a>
+    } @else {
+      <div class="user-info">
+        <div class="role-wrapper">
+          <span class="material-symbols-outlined">verified_user</span>
+          <span class="role-badge">{{ authService.userRole() }}</span>
+        </div>
+        <button type="button" (click)="logout()" class="btn-logout">
+          <span class="material-symbols-outlined">logout</span>
+          {{ langService.t()['nav']['logout'] }}
+        </button>
+      </div>
+    }
+  </div>
+</nav>
+
+<main class="content-container">
+  <router-outlet />
+</main>
+
+<mg-toast-container></mg-toast-container>

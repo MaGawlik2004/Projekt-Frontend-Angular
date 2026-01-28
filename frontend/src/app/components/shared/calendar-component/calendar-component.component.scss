@@ -1,0 +1,284 @@
+@import 'variables';
+
+.calendar-card {
+  background: $white;
+  border-radius: 20px;
+  border: 1px solid $border-color;
+  box-shadow: $box-shadow;
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  overflow: hidden;
+  width: 100%;
+
+  .calendar-header {
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid $border-color;
+    background: $white;
+
+    @media (max-width: 900px) {
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .week-picker {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: $bg-color;
+      padding: 6px;
+      border-radius: 16px;
+      border: 1px solid $border-color;
+
+      .arrow-btn {
+        background: $white;
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        padding: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        color: $text-dark;
+        transition: $transition;
+        z-index: 10;
+
+        &:hover {
+          background: $primary-color;
+          color: $white;
+          border-color: $primary-color;
+        }
+      }
+
+      .datepicker-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .date-trigger {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 6px 16px;
+          background: $white;
+          border-radius: 10px;
+          border: 1px solid transparent;
+          transition: $transition;
+          z-index: 1;
+
+          .material-symbols-outlined {
+            color: $text-light;
+            font-size: 1.3rem;
+          }
+
+          .date-range-info {
+            display: flex;
+            flex-direction: column;
+            .date-text {
+              font-size: 0.95rem;
+              font-weight: 800;
+              color: $text-dark;
+              white-space: nowrap;
+            }
+            .hint-text {
+              font-size: 0.65rem;
+              font-weight: 700;
+              color: $text-light;
+              text-transform: uppercase;
+              margin-top: -2px;
+            }
+          }
+        }
+
+        &:hover .date-trigger {
+          border-color: $primary-color;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+          .material-symbols-outlined,
+          .hint-text {
+            color: $primary-color;
+          }
+        }
+
+        .hidden-input {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          opacity: 0;
+          cursor: pointer;
+          z-index: 5;
+
+          &::-webkit-calendar-picker-indicator {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    .legend {
+      display: flex;
+      gap: 1rem;
+      .item {
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: $text-muted;
+        .box {
+          width: 14px;
+          height: 14px;
+          border-radius: 4px;
+          &.available {
+            background: $available-border;
+          }
+          &.booked {
+            background: $booked-border;
+          }
+          &.finished {
+            background: $completed-border;
+          }
+        }
+      }
+    }
+  }
+}
+
+.calendar-viewport {
+  overflow: auto;
+  background: $bg-color;
+  position: relative;
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $border-color;
+    border-radius: 10px;
+  }
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 75px repeat(7, minmax(140px, 1fr));
+  background: $white;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 65px repeat(7, 130px);
+    width: max-content;
+  }
+
+  .grid-header-cell {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: $bg-color;
+    padding: 1rem 0.5rem;
+    text-align: center;
+    border-bottom: 2px solid $primary-color;
+    border-right: 1px solid $border-color;
+
+    &.time-label {
+      z-index: 40;
+      left: 0;
+      color: $primary-color;
+    }
+    .day-name {
+      font-size: 0.65rem;
+      color: $text-muted;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    .day-date {
+      font-size: 1rem;
+      font-weight: 900;
+      color: $text-dark;
+    }
+  }
+
+  .time-row-label {
+    position: sticky;
+    left: 0;
+    z-index: 20;
+    background: $bg-color;
+    padding: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: $text-muted;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 2px solid $primary-color;
+    border-bottom: 1px solid $border-color;
+    min-height: 75px;
+  }
+
+  .calendar-slot {
+    background: $white;
+    border-right: 1px solid $border-color;
+    border-bottom: 1px solid $border-color;
+    min-height: 75px;
+    padding: 4px;
+    display: flex;
+    &:hover {
+      background: $bg-surface-light;
+    }
+  }
+
+  .appointment-pill {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border-left: 5px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: $transition;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+
+    &:hover {
+      transform: scale(0.97);
+      filter: brightness(0.95);
+    }
+    .status-icon {
+      font-size: 1.4rem;
+    }
+    .status-text {
+      font-size: 0.65rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    &.available {
+      background: $available-bg;
+      color: darken($available-border, 15%);
+      border-left-color: $available-border;
+    }
+    &.booked {
+      background: $booked-bg;
+      color: darken($booked-border, 15%);
+      border-left-color: $booked-border;
+    }
+    &.completed {
+      background: $completed-bg;
+      color: $text-muted;
+      border-left-color: $completed-border;
+      opacity: 0.8;
+    }
+  }
+}

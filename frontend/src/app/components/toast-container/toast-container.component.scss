@@ -1,0 +1,91 @@
+@import 'variables';
+
+.toast-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+
+  @media (max-width: 480px) {
+    top: auto;
+    bottom: 20px;
+    right: 10px;
+    left: 10px;
+  }
+}
+
+.toast-item {
+  pointer-events: auto;
+  min-width: 300px;
+  max-width: 400px;
+  padding: 16px;
+  border-radius: 12px;
+  background: $white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border: 1px solid $border-color;
+  cursor: pointer;
+  animation: slideIn 0.3s ease-out;
+  position: relative;
+
+  @media (max-width: 480px) {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .message {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: $text-dark;
+    flex: 1;
+  }
+
+  .close-btn {
+    background: none;
+    border: none;
+    color: $text-light;
+    cursor: pointer;
+    padding: 0;
+    .material-symbols-outlined {
+      font-size: 1.1rem;
+    }
+  }
+
+  &.success {
+    border-left: 5px solid $success-color;
+    .material-symbols-outlined:first-child {
+      color: $success-color;
+    }
+  }
+
+  &.error {
+    border-left: 5px solid $error-color;
+    .material-symbols-outlined:first-child {
+      color: $error-color;
+    }
+  }
+
+  &.warning {
+    border-left: 5px solid #f59e0b;
+    .material-symbols-outlined:first-child {
+      color: #f59e0b;
+    }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

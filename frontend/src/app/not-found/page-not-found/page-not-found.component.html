@@ -1,0 +1,16 @@
+<div class="not-found-container">
+  <div class="error-card">
+    <div class="icon-box">
+      <span class="material-symbols-outlined">running_with_errors</span>
+    </div>
+
+    <h1>{{ langService.t()['notFound']['title'] }}</h1>
+    <h2>{{ langService.t()['notFound']['subtitle'] }}</h2>
+    <p>{{ langService.t()['notFound']['description'] }}</p>
+
+    <button type="button" routerLink="/" class="btn-home">
+      <span class="material-symbols-outlined">home</span>
+      {{ langService.t()['notFound']['btnBack'] }}
+    </button>
+  </div>
+</div>

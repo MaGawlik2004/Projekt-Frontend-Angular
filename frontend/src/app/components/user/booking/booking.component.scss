@@ -1,0 +1,309 @@
+@import 'variables';
+
+* {
+  box-sizing: border-box;
+}
+
+.booking-page {
+  padding: 2.5rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+
+  .header-section {
+    margin-bottom: 2.5rem;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-back {
+      background: none;
+      border: none;
+      color: $primary-color;
+      font-weight: 800;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 0;
+      transition: $transition;
+
+      &:hover {
+        transform: translateX(-4px);
+        color: $primary-hover;
+      }
+
+      .material-symbols-outlined {
+        font-size: 1.2rem;
+      }
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: $text-dark;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+
+      @media (max-width: 600px) {
+        font-size: 1.5rem;
+        .material-symbols-outlined {
+          font-size: 1.8rem;
+          padding: 6px;
+        }
+      }
+
+      .material-symbols-outlined {
+        font-size: 2.2rem;
+        color: $primary-color;
+        background: $primary-light;
+        padding: 8px;
+        border-radius: $border-radius-md;
+      }
+    }
+
+    p {
+      color: $text-muted;
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+      @media (max-width: 480px) {
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: $glass-blur;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: $white;
+  padding: 2.5rem;
+  border-radius: $border-radius-lg;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: $modal-shadow;
+  animation: modalIn 0.3s ease-out;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+
+  @media (max-width: 480px) {
+    padding: 1.5rem;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $text-dark;
+      @media (max-width: 480px) {
+        font-size: 1.25rem;
+      }
+    }
+
+    .close-x {
+      background: $bg-surface-light;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: $text-light;
+      transition: $transition;
+
+      &:hover {
+        background: $border-color;
+        color: $text-dark;
+      }
+    }
+  }
+
+  .booking-summary {
+    background: $bg-color;
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    border: 1px solid $border-color;
+    width: 100%;
+
+    @media (max-width: 480px) {
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1rem;
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .material-symbols-outlined {
+        color: $primary-color;
+        font-size: 1.5rem;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        label {
+          color: $text-light;
+          font-weight: 700;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+        }
+        span {
+          font-weight: 700;
+          color: $text-dark;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+    width: 100%;
+
+    label {
+      display: block;
+      margin-bottom: 0.6rem;
+      font-weight: 700;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 14px;
+      border: 1.5px solid $border-color;
+      border-radius: $border-radius-md;
+      resize: none;
+      font-family: inherit;
+      font-size: 1rem;
+      min-height: 80px;
+      transition: $transition;
+      background: $white;
+      box-sizing: border-box;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: $input-focus-shadow;
+      }
+    }
+
+    &.checkbox-group {
+      .custom-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #f0fdf4;
+        padding: 12px;
+        border-radius: $border-radius-md;
+        border: 1px solid #dcfce7;
+        width: 100%;
+        box-sizing: border-box;
+
+        label {
+          margin-bottom: 0;
+          cursor: pointer;
+          color: #166534;
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    margin-top: 2rem;
+    width: 100%;
+
+    @media (max-width: 480px) {
+      flex-direction: column-reverse;
+      gap: 10px;
+    }
+
+    button {
+      flex: 1;
+      padding: 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: $transition;
+      width: 100%;
+    }
+
+    .btn-cancel {
+      background: $bg-surface-light;
+      color: $text-muted;
+    }
+
+    .btn-confirm-action {
+      background: $primary-gradient;
+      color: $white;
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba($primary-color, 0.3);
+      }
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,20 @@
+<div class="toast-wrapper">
+  @for (toast of toastService.toasts(); track toast.id) {
+    <div
+      class="toast-item"
+      [ngClass]="toast.type"
+      (click)="toastService.remove(toast.id)"
+      (keydown.enter)="toastService.remove(toast.id)"
+      role="button"
+      tabindex="0"
+    >
+      <span class="material-symbols-outlined">
+        {{ getIcon(toast.type) }}
+      </span>
+      <span class="message">{{ toast.message }}</span>
+      <button type="button" class="close-btn" aria-label="Close notification">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+  }
+</div>

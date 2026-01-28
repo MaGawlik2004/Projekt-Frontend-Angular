@@ -1,0 +1,19 @@
+<div class="doctor-dashboard">
+  <aside class="doctor-sidebar">
+    <div class="nav-brand">
+      <span class="material-symbols-outlined">medical_services</span>
+      <span>{{ langService.t()['doctorPanel']['brand'] }}</span>
+    </div>
+
+    <nav class="nav-menu">
+      <a routerLink="/doctor/schedule" routerLinkActive="active" class="nav-item">
+        <span class="material-symbols-outlined">calendar_month</span>
+        <span>{{ langService.t()['doctorPanel']['mySchedule'] }}</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="doctor-main-content">
+    <router-outlet />
+  </main>
+</div>
