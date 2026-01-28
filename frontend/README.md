@@ -40,7 +40,34 @@ Projekt posiada bardzo rygorystyczny linter. Wymagane jest:
 | `npm run lintstyle` | Sprawdza poprawność plików SCSS (Stylelint).                                              |
 | `ng build`          | Kompiluje aplikację do folderu `dist/` przy użyciu buildera `@angular/build:application`. |
 
-## 📁 Struktura plików styli
+## Struktura plików styli
 
-- `src/styles.scss` - Główne style aplikacji.
-- `src/_variables.scss` - Plik ze zmiennymi (kolory, typografia, odstępy).
+## 📁 Struktura Projektu
+
+Projekt podąża za architekturą modularną z podziałem na domeny biznesowe:
+
+```text
+src/
+├── _variables.scss          # Globalne zmienne SCSS (kolory, breakpointy)
+├── styles.scss              # Globalne style aplikacji
+├── app/
+│   ├── components/          # Komponenty interfejsu użytkownika
+│   │   ├── admin/           # Panel administratora i detale lekarzy
+│   │   ├── auth/            # Ekrany logowania i rejestracji
+│   │   ├── confirm-modal/   # Uniwersalne okno dialogowe do potwierdzania akcji (np. usuwanie)
+│   │   ├── doctor/          # Panel lekarza, grafik i zarządzanie wizytami
+│   │   ├── shared/          # Współdzielone elementy (kalendarz, formularze pomocnicze)
+│   │   ├── toast-container/ # Host dla dynamicznie wyświetlanych powiadomień systemowych
+│   │   └── user/            # Rezerwacje, wyszukiwarka lekarzy i panel pacjenta
+│   ├── services/            # Logika biznesowa i komunikacja z API
+│   │   ├── admin/           # Zarządzanie zasobami systemowymi
+│   │   ├── auth/            # Obsługa sesji, tokenów JWT i logowania
+│   │   ├── doctor/          # Serwis obsługujący grafik i dane medyczne
+│   │   ├── language/        # Internacjonalizacja i zmiana języka aplikacji
+│   │   ├── patient/         # Obsługa profilu pacjenta i procesu rezerwacji
+│   │   └── toast/           # Zarządzanie stanem i kolejką powiadomień (Toast Service)
+│   ├── models/              # Definicje typów, interfejsów i klas danych
+│   ├── guards/              # Strażnicy tras (zabezpieczanie dostępu przed nieautoryzowanym wejściem)
+│   ├── validators/          # Niestandardowa walidacja formularzy (np. walidacja domen)
+│   └── not-found/           # Obsługa błędu 404 i strony Page Not Found
+└── main.ts                  # Główny punkt wejścia aplikacji
